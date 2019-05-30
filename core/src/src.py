@@ -10,14 +10,15 @@ view_map = {
 def run():
     while 1:
         choice = input('''
-        1：学生登录
-        2：老师登录
-        3：管理登录
-        （输入q退出）''')
+1：学生登录
+2：老师登录
+3：管理登录
+（输入q退出）
+>>> ''')
         if choice == "q":
-            print("已退出")
+            print("已退出,结束程序")
             break
         if choice in view_map:
-            view_map[choice]
+            view_map[choice].run()
         else:
             print("错误输入，请重输")
