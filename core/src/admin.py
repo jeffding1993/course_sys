@@ -1,5 +1,15 @@
+from interface.admin_interface import register
+
 def admin_register():
-    pass
+    while 1:
+        name = input("请输入管理员用户名：").strip()
+        password = input("请输入对应的密码：").strip()
+        again_password = input("请输入同样的密码：").strip()
+        if again_password == password:
+            res = register(name, again_password)
+            if res:
+                return
+
 
 
 def admin_login():
