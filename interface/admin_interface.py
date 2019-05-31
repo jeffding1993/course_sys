@@ -72,3 +72,18 @@ def create_teacher(*args):
     else:
         db_handler.save_school(school_dic)
         return res, "老师创建成功"
+
+
+def add_course(school_name, course_name):
+    # 获取对应学校信息
+    res, school_dic = db_handler.select_school(school_name)
+
+    if not res:  # 判断学校是否存在
+        return False, "学校不存在，请先创建学校"
+
+    if course_name not in school_dic["courses"]:
+        school_dic["courses"].append(course_name)
+        db_handler.save_school(school_dic)
+        return True, "添加课程成功"
+    else:
+        return False, "课程已存在，无需添加"
