@@ -11,3 +11,9 @@ def teacher_login(teacher_name, teacher_password):
         return True, "老师登录成功"
     else:
         return False, "密码错误，请重新登录"
+
+
+def select_teacher(teacher_name):
+    res, teacher_dic = db_handler.select_teacher({"teacher_name": teacher_name})
+
+    return teacher_dic

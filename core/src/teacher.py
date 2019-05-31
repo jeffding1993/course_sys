@@ -1,4 +1,5 @@
 from interface import teacher_interface
+from lib.common import teacher_auth
 
 login_teacher_dic = {}
 
@@ -13,13 +14,19 @@ def teacher_login():
         if res:
             print(msg)
             login_teacher_dic["teacher_name"] = teacher_name
+            login_teacher_dic["teacher_courses"] = teacher_interface.select_teacher(teacher_name)["teacher_courses"]
             return
         else:
             print(msg)
 
 
+@teacher_auth
 def check_course():
-    pass
+    char = login_teacher_dic["teacher_name"] + " 教授的课程有 "
+    for course in login_teacher_dic["teacher_courses"]:
+        char += ("," + course)
+
+    print(char)
 
 
 def choose_course():
