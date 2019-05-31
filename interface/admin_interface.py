@@ -42,3 +42,33 @@ def create_school(*args):
         return res, "学校已存在, 请重新输入"
     else:
         return res, "学校创建成功"
+
+
+def create_teacher(*args):
+    teacher_dic = {"teacher_name": args[0],
+                   "teacher_password": args[1],
+                   "teacher_school": args[2],
+                   "teacher_courses": [args[3]]
+                   }
+
+    res, school_dic = db_handler.select_school(teacher_dic["teacher_school"])
+
+    if not res:  # 判断老师所在的学校是否存在
+        return False, "学校不存在，请先创建学校"
+
+    # 增加school对应的老师,如果不存在添加
+    if teacher_dic["teacher_name"] not in school_dic["teachers"]:
+        school_dic["teachers"].append(teacher_dic["teacher_name"])
+    # 如果老师教授的课程学校没有，进行添加
+    for course in teacher_dic["teacher_courses"]:
+        if course not in school_dic["courses"]:
+            school_dic["courses"].append(course)
+
+    # 创建老师信息
+    res = db_handler.create_teacher(teacher_dic)
+
+    if not res:
+        return res, "老师已存在, 请重新输入"
+    else:
+        db_handler.save_school(school_dic)
+        return res, "老师创建成功"

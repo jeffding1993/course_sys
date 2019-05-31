@@ -1,4 +1,4 @@
-from interface.admin_interface import register, login, create_school
+from interface.admin_interface import register, login, create_school, create_teacher
 from lib.common import admin_auth
 
 login_admin_dic = {}
@@ -53,8 +53,21 @@ def admin_create_school():
             print(msg)
 
 
-def create_teacher():
-    pass
+@admin_auth
+def admin_create_teacher():
+    # 老师  姓名  密码   教授的课程
+    teacher_name = input("请输入老师的名称：").strip()
+    teacher_password = input("请输入老师的密码：").strip()
+    teacher_school = input("请输入老师所在的学校：").strip()
+    teacher_course = input("请输入老师教授的课程：").strip()
+
+    res, msg = create_teacher(teacher_name, teacher_password, teacher_school, teacher_course)
+
+    if res:
+        print(msg)
+        return
+    else:
+        print(msg)
 
 
 def create_course():
@@ -65,7 +78,7 @@ func_map = {
     "1": admin_register,
     "2": admin_login,
     "3": admin_create_school,
-    "4": create_teacher,
+    "4": admin_create_teacher,
     "5": create_course
 }
 

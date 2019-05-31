@@ -48,3 +48,55 @@ def create_school(school_dic):
     target = PickleDb(school_dic, file_path)
     target.save()
     return True
+
+
+def select_school(school_name):
+    # 目标存放位置
+    file_path = os.path.join(settings.SCHOOL_DIR, "%s.pic" % school_name)
+
+    # 学校不存在
+    if not os.path.exists(file_path):
+        return False, {}
+
+    target = PickleDb({"school_name": school_name}, file_path)
+    return True, target.select()
+
+
+def save_school(school_dic):
+    # 存放位置
+    file_path = os.path.join(settings.SCHOOL_DIR, "%s.pic" % school_dic["school_name"])
+
+    # 使用pickle存放
+    target = PickleDb(school_dic, file_path)
+    target.save()
+    return True
+
+
+def create_teacher(teacher_dic):
+    # 判断老师存放目录是否存在，不存在则创建
+    if not os.path.exists(settings.TEACHER_DIR):
+        os.mkdir(settings.TEACHER_DIR)
+
+    # 老师信息存放位置
+    file_path = os.path.join(settings.TEACHER_DIR, "%s.pic" % teacher_dic["teacher_name"])
+
+    # 判断老师是否存在
+    if os.path.exists(file_path):
+        return False
+
+    # 使用pickle存放
+    target = PickleDb(teacher_dic, file_path)
+    target.save()
+    return True
+
+
+def select_teacher(teacher_dic):
+    # 目标存放位置
+    file_path = os.path.join(settings.TEACHER_DIR, "%s.pic" % teacher_dic["school_name"])
+
+    # 老师不存在
+    if not os.path.exists(file_path):
+        return False, {}
+
+    target = PickleDb(teacher_dic, file_path)
+    return True, target.select()
