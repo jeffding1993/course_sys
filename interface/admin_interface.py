@@ -59,11 +59,14 @@ def create_teacher(*args):
     # 增加school对应的老师,如果不存在添加
     if teacher_dic["teacher_name"] not in school_dic["teachers"]:
         school_dic["teachers"].append(teacher_dic["teacher_name"])
+
     # 如果老师教授的课程学校没有，进行添加
     for course in teacher_dic["teacher_courses"]:
         if course not in school_dic["courses"]:
             school_dic["courses"].append(course)
 
+    # 老师可以有多个学校
+    del teacher_dic["teacher_school"]
     # 创建老师信息
     res = db_handler.create_teacher(teacher_dic)
 

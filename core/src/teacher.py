@@ -1,5 +1,21 @@
+from interface import teacher_interface
+
+login_teacher_dic = {}
+
+
 def teacher_login():
-    pass
+    while 1:
+        teacher_name = input("请输入老师的名称：").strip()
+        teacher_password = input("请输入老师的密码：").strip()
+
+        res, msg = teacher_interface.teacher_login(teacher_name, teacher_password)
+
+        if res:
+            print(msg)
+            login_teacher_dic["teacher_name"] = teacher_name
+            return
+        else:
+            print(msg)
 
 
 def check_course():

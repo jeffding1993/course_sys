@@ -92,7 +92,7 @@ def create_teacher(teacher_dic):
 
 def select_teacher(teacher_dic):
     # 目标存放位置
-    file_path = os.path.join(settings.TEACHER_DIR, "%s.pic" % teacher_dic["school_name"])
+    file_path = os.path.join(settings.TEACHER_DIR, "%s.pic" % teacher_dic["teacher_name"])
 
     # 老师不存在
     if not os.path.exists(file_path):
