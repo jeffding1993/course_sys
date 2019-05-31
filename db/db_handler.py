@@ -129,7 +129,7 @@ def create_student(student_dic):
     return True
 
 
-def student_select(student_name):
+def select_student(student_name):
     # 目标存放位置
     file_path = os.path.join(settings.STUDENT_DIR, "%s.pic" % student_name)
 
@@ -139,3 +139,21 @@ def student_select(student_name):
 
     target = PickleDb({"student_name": student_name}, file_path)
     return True, target.select()
+
+
+def create_course(course_dic):
+    # 判断课程存放目录是否存在，不存在则创建
+    if not os.path.exists(settings.COURSE_DIR):
+        os.mkdir(settings.COURSE_DIR)
+
+    # 课程信息存放位置
+    file_path = os.path.join(settings.COURSE_DIR, "%s.pic" % course_dic["course_name"])
+
+    # 判断课程是否存在
+    if os.path.exists(file_path):
+        return False
+
+    # 使用pickle存放
+    target = PickleDb(course_dic, file_path)
+    target.save()
+    return True

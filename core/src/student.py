@@ -22,8 +22,8 @@ def student_register():
 
 def student_login():
     while 1:
-        student_name = input("请输入老师的名称：").strip()
-        student_password = input("请输入老师的密码：").strip()
+        student_name = input("请输入学生的名称：").strip()
+        student_password = input("请输入学生的密码：").strip()
 
         res, msg = student_interface.student_login(student_name, student_password)
 
@@ -38,7 +38,9 @@ def student_login():
 
 @student_auth
 def choose_school():
-    pass
+    school_name = input("请输入校区：").strip()
+
+
 
 
 @student_auth

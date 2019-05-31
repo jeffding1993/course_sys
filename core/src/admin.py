@@ -1,4 +1,4 @@
-from interface.admin_interface import register, login, create_school, create_teacher, add_course
+from interface import admin_interface
 from lib.common import admin_auth
 
 login_admin_dic = {}
@@ -10,7 +10,7 @@ def admin_register():
         password = input("请输入对应的密码：").strip()
         again_password = input("请输入同样的密码：").strip()
         if again_password == password:
-            res, msg = register(name, again_password)
+            res, msg = admin_interface.register(name, again_password)
             if res:
                 print(msg)
                 return
@@ -24,7 +24,7 @@ def admin_login():
     while 1:
         name = input("请输入需要登录的管理员用户名：").strip()
         password = input("请输入密码：").strip()
-        res, msg = login(name, password)
+        res, msg = admin_interface.login(name, password)
 
         if res:
             print(msg)
@@ -44,7 +44,7 @@ def admin_create_school():
         teacher = input("输入学校老师（创校老师）名称：").strip()
         course = input("所教授的课程：").strip()
 
-        res, msg = create_school(school_name, address, teacher, course)
+        res, msg = admin_interface.create_school(school_name, address, teacher, course)
 
         if res:
             print(msg)
@@ -61,7 +61,7 @@ def admin_create_teacher():
     teacher_school = input("请输入老师所在的学校：").strip()
     teacher_course = input("请输入老师教授的课程：").strip()
 
-    res, msg = create_teacher(teacher_name, teacher_password, teacher_school, teacher_course)
+    res, msg = admin_interface.create_teacher(teacher_name, teacher_password, teacher_school, teacher_course)
 
     if res:
         print(msg)
@@ -72,17 +72,16 @@ def admin_create_teacher():
 
 @admin_auth
 def create_course():
+    # 课程 名称 价格 周期  学生
     school_name = input("请输入需要需要添加课程的学校名称：").strip()
     course_name = input("请输入对应的课程名称：").strip()
+    course_price = input("请输入课程的价格：").strip()
+    course_period = input("请输入课程的周期：").strip()
 
-    res, msg = add_course(school_name, course_name)
+    # 课程信息存储
+    res, msg = admin_interface.create_course(school_name, course_name, course_price, course_period)
 
-    if res:
-        print(msg)
-        return
-    else:
-        print(msg)
-
+    print(msg)
 
 
 func_map = {

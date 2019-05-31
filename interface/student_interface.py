@@ -21,7 +21,8 @@ def student_login(student_name, student_password):
     student_dic = {"username": student_name,
                    "password": student_password
                    }
-    res, user_dic = db_handler.student_select(student_dic["username"])
+
+    res, user_dic = db_handler.select_student(student_dic["username"])
 
     if not res:
         return False, "学生账户不存在，请重新登录"
