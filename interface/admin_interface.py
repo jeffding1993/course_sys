@@ -3,7 +3,8 @@ from db import db_handler
 
 def register(username, password):
     admin_dic = {"username": username,
-                 "password": password}
+                 "password": password
+                 }
 
     res = db_handler.admin_save(admin_dic)
 
@@ -15,7 +16,8 @@ def register(username, password):
 
 def login(username, password):
     admin_dic = {"username": username,
-                 "password": password}
+                 "password": password
+                 }
     res, user_dic = db_handler.admin_select(admin_dic)
 
     if not res:
@@ -25,3 +27,18 @@ def login(username, password):
         return True, "登录成功"
     else:
         return False, "密码错误，请重新输入"
+
+
+def create_school(*args):
+    school_dic = {"school_name": args[0],
+                  "address": args[1],
+                  "teachers": [args[2]],
+                  "courses": [args[3]]
+                  }
+
+    res = db_handler.create_school(school_dic)
+
+    if not res:
+        return res, "学校已存在, 请重新输入"
+    else:
+        return res, "学校创建成功"
