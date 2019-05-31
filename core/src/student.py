@@ -1,5 +1,20 @@
+from interface.student_interface import register
+
+
 def student_register():
-    pass
+    while 1:
+        name = input("请输入学生用户名：").strip()
+        password = input("请输入对应的密码：").strip()
+        again_password = input("请输入同样的密码：").strip()
+        if again_password == password:
+            res, msg = register(name, again_password)
+            if res:
+                print(msg)
+                return
+            else:
+                print(msg)
+        else:
+            print("密码不同，请重新注册")
 
 
 def student_login():

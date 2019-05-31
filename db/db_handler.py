@@ -109,3 +109,21 @@ def save_teacher(teacher_dic):
     # 使用pickle存放
     target = PickleDb(teacher_dic, file_path)
     target.save()
+
+
+def create_student(student_dic):
+    # 判断存放目录是否存在，不存在则创建
+    if not os.path.exists(settings.STUDENT_DIR):
+        os.mkdir(settings.STUDENT_DIR)
+
+    # 目标存放位置
+    file_path = os.path.join(settings.STUDENT_DIR, "%s.pic" % student_dic["username"])
+
+    # 判断用户是否存在
+    if os.path.exists(file_path):
+        return False
+
+    # 使用pickle存放
+    target = PickleDb(student_dic, file_path)
+    target.save()
+    return True
