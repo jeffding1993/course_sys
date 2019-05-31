@@ -1,4 +1,7 @@
-from interface.admin_interface import register
+from interface.admin_interface import register, login
+
+login_admin_dic = {}
+
 
 def admin_register():
     while 1:
@@ -6,14 +9,29 @@ def admin_register():
         password = input("请输入对应的密码：").strip()
         again_password = input("请输入同样的密码：").strip()
         if again_password == password:
-            res = register(name, again_password)
+            res, msg = register(name, again_password)
             if res:
+                print(msg)
                 return
-
+            else:
+                print(msg)
+        else:
+            print("密码不同，请重新注册")
 
 
 def admin_login():
-    pass
+    while 1:
+        name = input("请输入需要登录的管理员用户名：").strip()
+        password = input("请输入密码：").strip()
+        res, msg = login(name, password)
+
+        if res:
+            print(msg)
+            login_admin_dic["username"] = name
+            login_admin_dic["password"] = password
+            return
+        else:
+            print(msg)
 
 
 def create_school():

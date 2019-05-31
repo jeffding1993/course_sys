@@ -1,4 +1,4 @@
-import pickle
+import pickle, os
 
 
 class PickleDb(object):
@@ -10,4 +10,5 @@ class PickleDb(object):
         pickle.dump(self.content, open(self.db_path, 'wb'))
 
     def select(self):
-        return pickle.load(open(self.db_path), 'rb')
+        return pickle.load(open(self.db_path, 'rb'))
+
