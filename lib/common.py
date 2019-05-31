@@ -1,8 +1,5 @@
-from functools import wraps
-
 
 def admin_auth(func):
-    wraps(func)
     from core.src import admin
 
     def inner(*args, **kwargs):
