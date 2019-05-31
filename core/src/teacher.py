@@ -29,8 +29,20 @@ def check_course():
     print(char)
 
 
+@teacher_auth
 def choose_course():
-    pass
+    while 1:
+        course_name = input("需要教授的课程：").strip()
+
+        res, msg = teacher_interface.add_teacher_course(course_name, login_teacher_dic)
+
+        if res:
+            print(msg)
+            login_teacher_dic["teacher_courses"].append(course_name)  # 更新登录信息
+            print(login_teacher_dic)
+            return
+        else:
+            print(msg)
 
 
 def check_student():

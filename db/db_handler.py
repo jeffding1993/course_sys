@@ -100,3 +100,12 @@ def select_teacher(teacher_dic):
 
     target = PickleDb(teacher_dic, file_path)
     return True, target.select()
+
+
+def save_teacher(teacher_dic):
+    # 目标存放位置
+    file_path = os.path.join(settings.TEACHER_DIR, "%s.pic" % teacher_dic["teacher_name"])
+
+    # 使用pickle存放
+    target = PickleDb(teacher_dic, file_path)
+    target.save()
