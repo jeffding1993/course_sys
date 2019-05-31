@@ -1,4 +1,7 @@
-from interface.student_interface import register
+from interface import student_interface
+from lib.common import student_auth
+
+login_student_dic = {}
 
 
 def student_register():
@@ -7,7 +10,7 @@ def student_register():
         password = input("请输入对应的密码：").strip()
         again_password = input("请输入同样的密码：").strip()
         if again_password == password:
-            res, msg = register(name, again_password)
+            res, msg = student_interface.student_register(name, again_password)
             if res:
                 print(msg)
                 return
@@ -18,17 +21,32 @@ def student_register():
 
 
 def student_login():
-    pass
+    while 1:
+        student_name = input("请输入老师的名称：").strip()
+        student_password = input("请输入老师的密码：").strip()
+
+        res, msg = student_interface.student_login(student_name, student_password)
+
+        if res:
+            print(msg)
+            login_student_dic["student_name"] = student_name
+            print(login_student_dic)
+            return
+        else:
+            print(msg)
 
 
+@student_auth
 def choose_school():
     pass
 
 
+@student_auth
 def choose_course():
     pass
 
 
+@student_auth
 def check_score():
     pass
 

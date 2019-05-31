@@ -127,3 +127,15 @@ def create_student(student_dic):
     target = PickleDb(student_dic, file_path)
     target.save()
     return True
+
+
+def student_select(student_name):
+    # 目标存放位置
+    file_path = os.path.join(settings.STUDENT_DIR, "%s.pic" % student_name)
+
+    # 学生不存在
+    if not os.path.exists(file_path):
+        return False, {}
+
+    target = PickleDb({"student_name": student_name}, file_path)
+    return True, target.select()
