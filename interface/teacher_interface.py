@@ -34,3 +34,12 @@ def add_teacher_course(course_name, login_teacher_dic):
         return True, "老师可教授课程添加成功"
     else:
         return False, "课程已存在"
+
+
+def save_teacher(teacher_dic):
+    res = db_handler.save_teacher(teacher_dic)
+
+    if res:
+        return True, "老师信息保存成功"
+    else:
+        return False, "老师信息保存失败"
