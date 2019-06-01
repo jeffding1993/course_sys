@@ -62,6 +62,7 @@ def choose_course():
         if course_dic:
             print(msg)
             course_dic["course_students"].append(login_student_dic["student_name"])
+            common_interface.save_course(course_dic)
         else:
             print(msg)
             return False

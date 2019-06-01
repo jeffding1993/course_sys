@@ -1,4 +1,4 @@
-from interface import teacher_interface
+from interface import teacher_interface, common_interface
 from lib.common import teacher_auth
 
 login_teacher_dic = {}
@@ -45,8 +45,21 @@ def choose_course():
             print(msg)
 
 
+@teacher_auth
 def check_student():
-    pass
+    course_name = input("请输入需要查询学生的课程名称：").strip()
+    teacher_dic = teacher_interface.select_teacher(login_teacher_dic["teacher_name"])
+    if course_name in teacher_dic["teacher_courses"]:
+        msg, course_dic = common_interface.choose_course(course_name)
+        if course_dic:
+            char = "有学生：\n"
+            for student in course_dic["course_students"]:
+                char += (student + "\n")
+            print(char)
+        else:
+            print(msg)
+    else:
+        print("不教授此课程")
 
 
 def modify_score():

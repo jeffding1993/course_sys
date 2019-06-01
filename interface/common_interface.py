@@ -7,3 +7,8 @@ def choose_course(course_name):
     if not res:
         return "无此课程", {}
     return "课程信息存在", course_dic
+
+
+def save_course(course_dic):
+    db_handler.save_course(course_dic)
+    return True
