@@ -2,10 +2,10 @@ from db import db_handler
 
 
 def student_register(username, password):
-    student_dic = {"username": username,
+    student_dic = {"student_name": username,
                    "password": password,
                    "courses": [],
-                   "school": '',
+                   "school_name": '',
                    "score": {}
                    }
 
@@ -31,3 +31,18 @@ def student_login(student_name, student_password):
         return True, "登录成功"
     else:
         return False, "密码错误，请重新输入"
+
+
+def save_student(login_dic):
+    res = db_handler.save_student(login_dic)
+
+    if res:
+        return True, "学生信息保存成功"
+    else:
+        return False, "学生信息保存失败"
+
+
+def select_student(student_name):
+    res, student_dic = db_handler.select_student(student_name)
+
+    return student_dic

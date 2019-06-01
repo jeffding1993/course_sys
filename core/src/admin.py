@@ -1,4 +1,4 @@
-from interface import admin_interface
+from interface import admin_interface, school_interface
 from lib.common import admin_auth
 
 login_admin_dic = {}
@@ -79,7 +79,7 @@ def create_course():
     course_period = input("请输入课程的周期：").strip()
 
     # 课程信息存储
-    res, msg = admin_interface.create_course(school_name, course_name, course_price, course_period)
+    res, msg = school_interface.create_course(school_name, course_name, course_price, course_period)
 
     print(msg)
 

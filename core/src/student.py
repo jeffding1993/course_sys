@@ -1,4 +1,4 @@
-from interface import student_interface
+from interface import student_interface, school_interface
 from lib.common import student_auth
 
 login_student_dic = {}
@@ -29,8 +29,8 @@ def student_login():
 
         if res:
             print(msg)
-            login_student_dic["student_name"] = student_name
-            print(login_student_dic)
+            global login_student_dic
+            login_student_dic = student_interface.select_student(student_name)
             return
         else:
             print(msg)
@@ -40,12 +40,29 @@ def student_login():
 def choose_school():
     school_name = input("请输入校区：").strip()
 
+    res, msg = school_interface.choose_school(school_name)
 
+    if res:
+        print(msg)
+        login_student_dic["school_name"] = school_name
+        student_interface.save_student(login_student_dic)
+    else:
+        print(msg)
 
 
 @student_auth
 def choose_course():
-    pass
+    course_name = input("请输入课程：").strip()
+
+    res = school_interface.choose_course(login_student_dic)
+
+    if (course_name in res) and (course_name not in login_student_dic["courses"]):
+        login_student_dic["courses"].append(course_name)
+        student_interface.save_student(login_student_dic)
+        print("课程选择成功")
+        print(login_student_dic)
+    else:
+        print("选课失败")
 
 
 @student_auth

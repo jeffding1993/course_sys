@@ -10,9 +10,9 @@ view_map = {
 def run():
     while 1:
         choice = input('''
-1：学生登录
-2：老师登录
-3：管理登录
+1：学生视图
+2：老师视图
+3：管理视图
 （输入q退出）
 >>> ''')
         if choice == "q":
