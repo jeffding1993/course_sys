@@ -1,4 +1,4 @@
-from interface import student_interface, school_interface
+from interface import student_interface, school_interface, common_interface
 from lib.common import student_auth
 
 login_student_dic = {}
@@ -57,10 +57,17 @@ def choose_course():
     res = school_interface.choose_course(login_student_dic)
 
     if (course_name in res) and (course_name not in login_student_dic["courses"]):
+        # 课程信息添加学生
+        msg, course_dic = common_interface.choose_course(course_name)
+        if course_dic:
+            print(msg)
+            course_dic["course_students"].append(login_student_dic["student_name"])
+        else:
+            print(msg)
+            return False
         login_student_dic["courses"].append(course_name)
         student_interface.save_student(login_student_dic)
         print("课程选择成功")
-        print(login_student_dic)
     else:
         print("选课失败")
 

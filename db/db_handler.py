@@ -167,3 +167,15 @@ def create_course(course_dic):
     target = PickleDb(course_dic, file_path)
     target.save()
     return True
+
+
+def select_course(course_name):
+    # 目标存放位置
+    file_path = os.path.join(settings.COURSE_DIR, "%s.pic" % course_name)
+
+    # 课程不存在
+    if not os.path.exists(file_path):
+        return False, {}
+
+    target = PickleDb({"course_name": course_name}, file_path)
+    return True, target.select()
