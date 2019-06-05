@@ -1,14 +1,11 @@
-from db import db_handler
+import os
+from conf import settings
 
 
-def choose_course(course_name):
-    res, course_dic = db_handler.select_course(course_name)
+# 查看文件
+def select_all_file(name):
+    file_path = os.path.join(settings.DB_PATH, name)
 
-    if not res:
-        return "无此课程", {}
-    return "课程信息存在", course_dic
-
-
-def save_course(course_dic):
-    db_handler.save_course(course_dic)
-    return True
+    if not os.path.exists(file_path):
+        return False
+    return os.listdir(file_path)

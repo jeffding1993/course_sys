@@ -1,4 +1,4 @@
-from interface import admin_interface, school_interface
+from interface import admin_interface, school_interface, common_interface
 from lib.common import admin_auth
 
 login_admin_dic = {}
@@ -41,10 +41,8 @@ def admin_create_school():
         # 学校  学校的名字 地址  老师 课程
         school_name = input("输入需要创建的学校名称：").strip()
         address = input("输入学校所在的地址：").strip()
-        teacher = input("输入学校老师（创校老师）名称：").strip()
-        course = input("所教授的课程：").strip()
 
-        res, msg = admin_interface.create_school(school_name, address, teacher, course)
+        res, msg = admin_interface.create_school(school_name, address, admin_dic=login_admin_dic)
 
         if res:
             print(msg)
@@ -59,9 +57,9 @@ def admin_create_teacher():
     teacher_name = input("请输入老师的名称：").strip()
     teacher_password = input("请输入老师的密码：").strip()
     teacher_school = input("请输入老师所在的学校：").strip()
-    teacher_course = input("请输入老师教授的课程：").strip()
+    # teacher_course = input("请输入老师教授的课程：").strip()
 
-    res, msg = admin_interface.create_teacher(teacher_name, teacher_password, teacher_school, teacher_course)
+    res, msg = admin_interface.create_teacher(teacher_name, teacher_password, teacher_school, admin_dic=login_admin_dic)
 
     if res:
         print(msg)
@@ -73,15 +71,30 @@ def admin_create_teacher():
 @admin_auth
 def create_course():
     # 课程 名称 价格 周期  学生
-    school_name = input("请输入需要需要添加课程的学校名称：").strip()
-    course_name = input("请输入对应的课程名称：").strip()
-    course_price = input("请输入课程的价格：").strip()
-    course_period = input("请输入课程的周期：").strip()
+    while 1:
+        school_list = common_interface.select_all_file("school")
+        if not school_list:
+            print("无学校可选择，请先创建学校。")
+            break
 
-    # 课程信息存储
-    res, msg = school_interface.create_course(school_name, course_name, course_price, course_period)
+        for i, v in enumerate(school_list):
+            print(i, v)
+        school_num = input("请输入需要需要添加课程的学校序号：").strip()
+        if school_num.isdigit():
+            school_num = int(school_num)
 
-    print(msg)
+            if school_num >= 0 and school_num < len(school_list):
+                school_name = school_list[school_num]
+                course_name = input("请输入对应的课程名称：").strip()
+                course_price = input("请输入课程的价格：").strip()
+                course_period = input("请输入课程的周期：").strip()
+                # 课程信息存储
+                admin_interface.create_course(school_name, course_name, course_price, course_period,
+                                              admin_dic=login_admin_dic)
+                break
+            else:
+                print("输入学校编号错误，请重新输入。")
+
 
 
 func_map = {
