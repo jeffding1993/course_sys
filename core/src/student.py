@@ -1,5 +1,5 @@
 from interface import student_interface, school_interface, common_interface
-from lib.common import student_auth
+from lib.common import login_auth
 
 login_student_dic = {}
 
@@ -36,7 +36,7 @@ def student_login():
             print(msg)
 
 
-@student_auth
+@login_auth("student")
 def choose_school():
     school_name = input("请输入校区：").strip()
 
@@ -50,7 +50,7 @@ def choose_school():
         print(msg)
 
 
-@student_auth
+@login_auth("student")
 def choose_course():
     course_name = input("请输入课程：").strip()
 
@@ -73,7 +73,7 @@ def choose_course():
         print("选课失败")
 
 
-@student_auth
+@login_auth("student")
 def check_score():
     char = "现有的课程如下：\n"
     for course in login_student_dic["courses"]:

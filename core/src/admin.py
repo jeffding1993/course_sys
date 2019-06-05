@@ -1,5 +1,5 @@
-from interface import admin_interface, school_interface, common_interface
-from lib.common import admin_auth
+from interface import admin_interface, common_interface
+from lib.common import login_auth
 
 login_admin_dic = {}
 
@@ -35,7 +35,7 @@ def admin_login():
             print(msg)
 
 
-@admin_auth
+@login_auth("admin")
 def admin_create_school():
     while 1:
         # 学校  学校的名字 地址  老师 课程
@@ -51,7 +51,7 @@ def admin_create_school():
             print(msg)
 
 
-@admin_auth
+@login_auth("admin")
 def admin_create_teacher():
     # 老师  姓名  密码   教授的课程
     teacher_name = input("请输入老师的名称：").strip()
@@ -68,14 +68,14 @@ def admin_create_teacher():
         print(msg)
 
 
-@admin_auth
+@login_auth("admin")
 def create_course():
     # 课程 名称 价格 周期  学生
     while 1:
         school_list = common_interface.select_all_file("school")
         if not school_list:
             print("无学校可选择，请先创建学校。")
-            break
+            return
 
         for i, v in enumerate(school_list):
             print(i, v)
@@ -89,12 +89,15 @@ def create_course():
                 course_price = input("请输入课程的价格：").strip()
                 course_period = input("请输入课程的周期：").strip()
                 # 课程信息存储
-                admin_interface.create_course(school_name, course_name, course_price, course_period,
-                                              admin_dic=login_admin_dic)
-                break
+                res, msg = admin_interface.create_course(school_name, course_name, course_price, course_period,
+                                                         admin_dic=login_admin_dic)
+                if res:
+                    print(msg)
+                    return
+                else:
+                    print(msg)
             else:
                 print("输入学校编号错误，请重新输入。")
-
 
 
 func_map = {

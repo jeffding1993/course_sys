@@ -1,5 +1,5 @@
 from interface import teacher_interface, common_interface, student_interface
-from lib.common import teacher_auth
+from lib.common import login_auth
 
 login_teacher_dic = {}
 
@@ -20,7 +20,7 @@ def teacher_login():
             print(msg)
 
 
-@teacher_auth
+@login_auth("teacher")
 def check_course():
     char = login_teacher_dic["teacher_name"] + " 教授的课程有 :\n"
     for course in login_teacher_dic["teacher_courses"]:
@@ -29,7 +29,7 @@ def check_course():
     print(char)
 
 
-@teacher_auth
+@login_auth("teacher")
 def choose_course():
     while 1:
         course_name = input("需要额外教授的课程：").strip()
@@ -46,7 +46,7 @@ def choose_course():
             print(msg)
 
 
-@teacher_auth
+@login_auth("teacher")
 def check_student(course_name=None):
     if not course_name:
         course_name = input("请输入需要查询学生的课程名称：").strip()
@@ -66,7 +66,7 @@ def check_student(course_name=None):
         print("不教授此课程")
 
 
-@teacher_auth
+@login_auth("teacher")
 def modify_score():  # 修改学生成绩     1.选择课程   2.打印课程下的学生  3.选择学生  输入成绩 修改字典的值
     while 1:
         check_course()
