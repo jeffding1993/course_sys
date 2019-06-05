@@ -25,12 +25,11 @@ def student_login():
         student_name = input("请输入学生的名称：").strip()
         student_password = input("请输入学生的密码：").strip()
 
-        res, msg = student_interface.student_login(student_name, student_password)
+        res, msg = common_interface.login_interface(student_name, student_password, "student")
 
         if res:
             print(msg)
-            global login_student_dic
-            login_student_dic = student_interface.select_student(student_name)
+            login_student_dic["username"] = student_name
             return
         else:
             print(msg)

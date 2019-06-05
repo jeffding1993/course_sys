@@ -24,7 +24,7 @@ def admin_login():
     while 1:
         name = input("请输入需要登录的管理员用户名：").strip()
         password = input("请输入密码：").strip()
-        res, msg = admin_interface.login(name, password)
+        res, msg = common_interface.login_interface(name, password, "admin")
 
         if res:
             print(msg)

@@ -37,6 +37,12 @@ class School(Base):
         self.courses = []
         self.save()
 
+    def add_course(self, course_name):
+        self.courses.append(course_name)
+
+    def add_teacher(self, teacher_name):
+        self.teachers.append(teacher_name)
+
 
 class Teacher(Base):
     def __init__(self, *args):
@@ -50,4 +56,13 @@ class Course(Base):
     def __init__(self, *args):
         self.school_name, self.name, self.price, self.period = args
         self.students = []
+        self.save()
+
+
+class Student(Base):
+    def __init__(self, *args):
+        self.name, self.password = args
+        self.courses = []
+        self.school_name = None
+        self.score = {}
         self.save()

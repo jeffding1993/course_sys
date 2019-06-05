@@ -9,12 +9,11 @@ def teacher_login():
         teacher_name = input("请输入老师的名称：").strip()
         teacher_password = input("请输入老师的密码：").strip()
 
-        res, msg = teacher_interface.teacher_login(teacher_name, teacher_password)
+        res, msg = common_interface.login_interface(teacher_name, teacher_password, "teacher")
 
         if res:
             print(msg)
-            global login_teacher_dic
-            login_teacher_dic = teacher_interface.select_teacher(teacher_name)
+            login_teacher_dic["username"] = teacher_name
             return
         else:
             print(msg)
