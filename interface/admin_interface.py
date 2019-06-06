@@ -1,5 +1,4 @@
 from db.models import Admin, School, Teacher
-from interface import common_interface
 
 
 def register(username, password):

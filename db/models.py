@@ -22,10 +22,12 @@ class Admin(Base):
     def add_school(cls, *args):
         School(*args)
 
-    def add_teacher(self, *args):
+    @staticmethod
+    def add_teacher(*args):
         Teacher(*args)
 
-    def add_course(self, *args):
+    @staticmethod
+    def add_course(*args):
         Course(*args)
 
 
@@ -58,6 +60,10 @@ class Course(Base):
         self.students = []
         self.save()
 
+    def add_student(self, student_name):
+        self.students.append(student_name)
+        self.save()
+
 
 class Student(Base):
     def __init__(self, *args):
@@ -65,4 +71,12 @@ class Student(Base):
         self.courses = []
         self.school_name = None
         self.score = {}
+        self.save()
+
+    def choose_course(self, course_name):
+        self.courses.append(course_name)
+        self.save()
+
+    def choose_school(self, schooL_name):
+        self.school_name = schooL_name
         self.save()

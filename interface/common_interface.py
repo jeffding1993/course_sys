@@ -12,6 +12,7 @@ def select_all_file(name):
     return os.listdir(file_path)
 
 
+# 通用登录接口
 def login_interface(user_name, password, user_type):
     if user_type == "student":
         obj = models.Student.select(user_name)
@@ -34,18 +35,6 @@ def login_interface(user_name, password, user_type):
         return False, "没有此权限"
 
     if password == obj.password:
-        return True, "登录成功"
-    else:
-        return False, "密码错误，请重新输入"
-
-
-def login(username, password):
-    admin_obj = Admin.select(username)
-
-    if not admin_obj:
-        return False, "管理员账户不存在，请重新登录"
-
-    if password == admin_obj.password:
         return True, "登录成功"
     else:
         return False, "密码错误，请重新输入"

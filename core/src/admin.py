@@ -83,7 +83,7 @@ def create_course():
         if school_num.isdigit():
             school_num = int(school_num)
 
-            if school_num >= 0 and school_num < len(school_list):
+            if 0 <= school_num < len(school_list):
                 school_name = school_list[school_num]
                 course_name = input("请输入对应的课程名称：").strip()
                 course_price = input("请输入课程的价格：").strip()

@@ -37,52 +37,97 @@ def student_login():
 
 @login_auth("student")
 def choose_school():
-    school_name = input("请输入校区：").strip()
+    while 1:
+        school_list = student_interface.get_school_list("school")
+        if not school_list:
+            return False, "没有创建学校，请先创建"
 
-    res, msg = school_interface.choose_school(school_name)
+        for i, v in enumerate(school_list):
+            print(i, v)
 
-    if res:
-        print(msg)
-        login_student_dic["school_name"] = school_name
-        student_interface.save_student(login_student_dic)
-    else:
-        print(msg)
+        choice = input("请输入校区编号（输入q退出）：").strip()
+
+        if choice == "q":
+            print("退出")
+            break
+
+        if choice.isdigit():
+            choice = int(choice)
+            if 0 <= choice < len(school_list):
+                res, msg = student_interface.choose_school(login_student_dic["username"], school_list[choice])
+                if res:
+                    print(msg)
+                    break
+                else:
+                    print(msg)
+            else:
+                print("非法输入，请重新输入")
+        else:
+            print("输入非数字，请重新输入")
 
 
 @login_auth("student")
 def choose_course():
-    course_name = input("请输入课程：").strip()
+    while 1:
 
-    res = school_interface.choose_course(login_student_dic)
+        res, msg = student_interface.check_school(login_student_dic["username"])
 
-    if (course_name in res) and (course_name not in login_student_dic["courses"]):
-        # 课程信息添加学生
-        msg, course_dic = common_interface.choose_course(course_name)
-        if course_dic:
+        if not res:
             print(msg)
-            course_dic["course_students"].append(login_student_dic["student_name"])
-            common_interface.save_course(course_dic)
+            break
+
+        courses_list = student_interface.get_courses_list(login_student_dic["username"])
+
+        if not courses_list:
+            print("学校无课程，请先创建课程")
+            break
+
+        for i, v in enumerate(courses_list):
+            print(i, v)
+
+        choice = input("请输入课程编号：").strip()
+
+        if choice.isdigit():
+            choice = int(choice)
+            if len(courses_list) > choice >= 0:
+                res, msg = student_interface.choose_course(login_student_dic["username"], courses_list[choice])
+
+                if res:
+                    res = school_interface.choose_course(login_student_dic["username"], courses_list[choice])
+                    if res:
+                        print(msg)
+                        break
+                    else:
+                        print("课程信息修改错误")
+                else:
+                    print(msg)
+            else:
+                print("请输入正确编号")
         else:
-            print(msg)
-            return False
-        login_student_dic["courses"].append(course_name)
-        student_interface.save_student(login_student_dic)
-        print("课程选择成功")
-    else:
-        print("选课失败")
+            print("请输入数字")
 
 
 @login_auth("student")
 def check_score():
-    char = "现有的课程如下：\n"
-    for course in login_student_dic["courses"]:
-        char += course
-    print(char)
-    course_name = input("请输入需要查看成绩的课程名称：").strip()
-    if course_name not in login_student_dic["courses"]:
-        print("错误输入")
-        return False
-    print("课程%s ：的成绩为 %s" % (course_name, login_student_dic["score"][course_name]))
+    res = student_interface.check_score(login_student_dic["username"])
+
+    if not res:
+        print("学生%s 还没有课程成绩" % login_student_dic["username"])
+        return
+
+    for k, v in res.items():
+        print(k + " 成绩为：" + v)
+
+
+    # char = "现有的课程如下：\n"
+    # for course in login_student_dic["courses"]:
+    #     char += course
+    # print(char)
+    # course_name = input("请输入需要查看成绩的课程名称：").strip()
+    # if course_name not in login_student_dic["courses"]:
+    #     print("错误输入")
+    #     return False
+    # print("课程%s ：的成绩为 %s" % (course_name, login_student_dic["score"][course_name]))
 
 
 func_map = {
