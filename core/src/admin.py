@@ -57,7 +57,6 @@ def admin_create_teacher():
     teacher_name = input("请输入老师的名称：").strip()
     teacher_password = input("请输入老师的密码：").strip()
     teacher_school = input("请输入老师所在的学校：").strip()
-    # teacher_course = input("请输入老师教授的课程：").strip()
 
     res, msg = admin_interface.create_teacher(teacher_name, teacher_password, teacher_school, admin_dic=login_admin_dic)
 

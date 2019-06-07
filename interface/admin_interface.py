@@ -56,7 +56,6 @@ def create_course(*args, **kwargs):
 
     if args[1] not in school_obj.courses:
         school_obj.add_course(args[1])
-        school_obj.save()
 
     admin_obj.add_course(*args)
 

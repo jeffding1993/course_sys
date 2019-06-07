@@ -1,33 +1,40 @@
-from db import db_handler
+from db.models import Teacher, Course, Student
 
 
-def select_teacher(teacher_name):
-    res, teacher_dic = db_handler.select_teacher({"teacher_name": teacher_name})
+def get_teacher_courses(teacher_name):
+    teacher_obj = Teacher.select(teacher_name)
 
-    return teacher_dic
+    if not teacher_obj.courses:
+        return False
+
+    return teacher_obj.courses
 
 
-def add_teacher_course(course_name, login_teacher_dic):
-    res, teacher_dic = db_handler.select_teacher(login_teacher_dic)
+def add_teacher_course(teacher_name, course_name):
+    teacher_obj = Teacher.select(teacher_name)
 
-    if course_name not in teacher_dic["teacher_courses"]:
-        teacher_dic["teacher_courses"].append(course_name)
-        db_handler.save_teacher(teacher_dic)
+    if course_name not in teacher_obj.courses:
+        teacher_obj.add_course(course_name)
 
-        # 学校课程信息更新
-        res, school_dic = db_handler.select_school(teacher_dic["teacher_school"])
-        school_dic["courses"].append(course_name)
-        db_handler.save_school(school_dic)
-
-        return True, "老师可教授课程添加成功"
+        return True, "老师选择课程成功"
     else:
-        return False, "课程已存在"
+        return False, "课程已被选择"
 
 
-def save_teacher(teacher_dic):
-    res = db_handler.save_teacher(teacher_dic)
+def check_student(course_name):
+    course_obj = Course.select(course_name)
 
-    if res:
-        return True, "老师信息保存成功"
-    else:
-        return False, "老师信息保存失败"
+    if not course_obj:
+        return False, "无此课程"
+    elif not course_obj.students:
+        return False, "课程无学生"
+
+    return course_obj.students, "学生列表"
+
+
+def modify_student_score(course_name, student_name, score: int):
+    stu_obj = Student.select(student_name)
+
+    Teacher.modify_student_score(stu_obj, course_name, score)
+
+    return True, "修改%s的%s成绩为%s成功" % (student_name, course_name, str(score))

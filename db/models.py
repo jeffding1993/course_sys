@@ -41,9 +41,11 @@ class School(Base):
 
     def add_course(self, course_name):
         self.courses.append(course_name)
+        self.save()
 
     def add_teacher(self, teacher_name):
         self.teachers.append(teacher_name)
+        self.save()
 
 
 class Teacher(Base):
@@ -52,6 +54,15 @@ class Teacher(Base):
         self.password = args[1]
         self.courses = []
         self.save()
+
+    def add_course(self, course_name):
+        self.courses.append(course_name)
+        self.save()
+
+    @staticmethod
+    def modify_student_score(stu_obj, course_name, score):
+        stu_obj.score[course_name] = score
+        stu_obj.save()
 
 
 class Course(Base):

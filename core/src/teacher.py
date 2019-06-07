@@ -21,70 +21,129 @@ def teacher_login():
 
 @login_auth("teacher")
 def check_course():
-    char = login_teacher_dic["teacher_name"] + " 教授的课程有 :\n"
-    for course in login_teacher_dic["teacher_courses"]:
-        char += (course + "\n")
+    char = login_teacher_dic["username"] + " 教授的课程有 :\n"
+    res = teacher_interface.get_teacher_courses(login_teacher_dic["username"])
 
+    if not res:
+        print("老师还没有选择教授的课程，请先选择")
+        return
+
+    for i, v in enumerate(res):
+        char += v + "\n"
     print(char)
 
 
 @login_auth("teacher")
 def choose_course():
     while 1:
-        course_name = input("需要额外教授的课程：").strip()
+        course_list = common_interface.select_all_file("course")
+        if not course_list:
+            print("无课程，请先创建")
 
-        res, msg = teacher_interface.add_teacher_course(course_name, login_teacher_dic)
+        for i, v in enumerate(course_list):
+            print(i, v)
 
-        if res:
-            print(msg)
-            login_teacher_dic["teacher_courses"].append(course_name)  # 更新登录信息
-            res, msg = teacher_interface.save_teacher(login_teacher_dic)
-            if res:
-                return
+        choice = input("需要额外教授的课程编号：").strip()
+
+        if choice.isdigit():
+            choice = int(choice)
+
+            if len(course_list) > choice >= 0:
+                res, msg = teacher_interface.add_teacher_course(login_teacher_dic["username"], course_list[choice])
+
+                if res:
+                    print(msg)
+                    break
+                else:
+                    print(msg)
+                    break
+            else:
+                print("请输入正确的编号")
         else:
-            print(msg)
+            print("请输入数字")
 
 
 @login_auth("teacher")
-def check_student(course_name=None):
-    if not course_name:
-        course_name = input("请输入需要查询学生的课程名称：").strip()
-    teacher_dic = teacher_interface.select_teacher(login_teacher_dic["teacher_name"])
-    if course_name in teacher_dic["teacher_courses"]:
-        msg, course_dic = common_interface.choose_course(course_name)
-        if course_dic:
-            char = "有学生：\n"
-            for student in course_dic["course_students"]:
-                char += (student + "\n")
-            print(char)
-            return True
+def check_student():
+    while 1:
+        teacher_course_list = teacher_interface.get_teacher_courses(login_teacher_dic["username"])
+
+        if not teacher_course_list:
+            print("老师还未选择课程")
+            break
+
+        for i, v in enumerate(teacher_course_list):
+            print(i, v)
+
+        choice = input("选择需要查看学生的课程编号：").strip()
+
+        if choice.isdigit():
+            choice = int(choice)
+
+            if len(teacher_course_list) > choice >= 0:
+                res, msg = teacher_interface.check_student(teacher_course_list[choice])
+
+                if not res:
+                    print(msg)
+                    break
+
+                print("课程学生有：")
+                for v in res:
+                    print(v + "\n")
+                break
+            else:
+                print("请输入正确编号")
         else:
-            print(msg)
-            return False
-    else:
-        print("不教授此课程")
+            print("请输入数字")
 
 
 @login_auth("teacher")
 def modify_score():  # 修改学生成绩     1.选择课程   2.打印课程下的学生  3.选择学生  输入成绩 修改字典的值
     while 1:
-        check_course()
-        course_name = input("请输入需要修改学生成绩的课程名称：").strip()
-        if course_name not in login_teacher_dic["teacher_courses"]:
-            print("错误输入")
-            continue
-        check_student(course_name=course_name)
-        student_name = input("请输入需要修改学生成绩的学生名称：").strip()
-        msg, course_dic = common_interface.choose_course(course_name)
-        if student_name not in course_dic["course_students"]:
-            print("无此学生，请重新输入")
-            continue
-        student_dic = student_interface.select_student(student_name)
-        score = input("请输入该课程的成绩：").strip()
-        student_dic["score"][course_name] = int(score)
-        student_interface.save_student(student_dic)
-        print("修改学生：%s 成绩成功, 成绩为 %s" % (student_name, score))
-        return
+        course_list = teacher_interface.get_teacher_courses(login_teacher_dic["username"])
+
+        if not course_list:
+            print("老师没有选择课程课程")
+
+        for i, v in enumerate(course_list):
+            print(i, v)
+
+        choice = input("选择需要修改学生成绩的课程编号：").strip()
+
+        if choice.isdigit():
+            choice = int(choice)
+            course_name = course_list[choice]
+
+            if len(course_list) > choice >= 0:
+                res, msg = teacher_interface.check_student(course_list[choice])
+
+                if not res:
+                    print(msg)
+                    break
+
+                for i, v in enumerate(res):
+                    print(i, v)
+
+                choice = input("选择学生编号：").strip()
+
+                if choice.isdigit():
+                    choice = int(choice)
+
+                    if len(res) > choice >= 0:
+                        student_name = res[choice]
+                        score = input("请输入成绩：")
+                        res, msg = teacher_interface.modify_student_score(course_name, student_name, int(score))
+                        if res:
+                            print(msg)
+                            break
+                    else:
+                        print("请输入正确选项")
+                else:
+                    print("请输入数字")
+            else:
+                print("请输入正确选项")
+        else:
+            print("请输入数字")
 
 
 func_map = {

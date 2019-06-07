@@ -119,17 +119,6 @@ def check_score():
         print(k + " 成绩为：" + v)
 
 
-    # char = "现有的课程如下：\n"
-    # for course in login_student_dic["courses"]:
-    #     char += course
-    # print(char)
-    # course_name = input("请输入需要查看成绩的课程名称：").strip()
-    # if course_name not in login_student_dic["courses"]:
-    #     print("错误输入")
-    #     return False
-    # print("课程%s ：的成绩为 %s" % (course_name, login_student_dic["score"][course_name]))
-
-
 func_map = {
     "1": student_register,
     "2": student_login,
